@@ -4,10 +4,8 @@ import type { PluginData } from '@/types';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
-import { QuickActionsCard } from '@/components/plugins/plugin-actions';
 import { PluginHeader } from '@/components/plugins/plugin-header';
 import { HelpCard } from '@/components/plugins/plugin-help';
-import { PluginInfoCard } from '@/components/plugins/plugin-info';
 import { PluginTabs } from '@/components/plugins/plugin-tabs';
 
 import { fetchPluginReadme, fetchPlugins } from '@/lib/data';
@@ -75,24 +73,13 @@ export default function PluginPage({ params }: PluginPageProps) {
 						<PluginTabs readme={readme} pluginName={plugin.name} />
 					</div>
 
-					<div className='space-y-6'>
-						<QuickActionsCard filePath={plugin.filePath} />
-						<PluginInfoCard plugin={plugin} />
+					<div className='space-y-3'>
+						{/* <QuickActionsCard filePath={plugin.filePath} /> */}
+						{/* <PluginInfoCard plugin={plugin} /> */}
 						<HelpCard />
 					</div>
 				</div>
 			</main>
-
-			<script
-				dangerouslySetInnerHTML={{
-					__html: `
-            window.copyCode = async function(code, id) {
-              await navigator.clipboard.writeText(code);
-              // Could add visual feedback here
-            }
-          `,
-				}}
-			/>
 		</div>
 	);
 }
