@@ -1,6 +1,6 @@
 import { type Metadata } from 'next';
 
-import RepoCard from '@/components/repo-card';
+import RepoCard from '@/components/source/repo-card';
 
 import { SOURCE_CODE } from '@/lib/constants';
 import { getEnv } from '@/lib/env';
@@ -20,7 +20,7 @@ const repos: RepoEntry[] = [
 	{
 		name: 'eagleCord-www',
 		description: 'Repository for the EagleCord / Vencord Rebuild Website.',
-		repo: 'prodbyeagle/vencord-www',
+		repo: 'prodbyeagle/eagleCord-www',
 	},
 	{
 		name: 'EagleCord',
@@ -104,7 +104,7 @@ export default async function SourceCodePage() {
 					</p>
 				</div>
 
-				<div className='grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'>
+				<div className='grid gap-4 grid-cols-1 sm:grid-cols-2'>
 					{repoData.map(
 						(repo, i) =>
 							repo && (
@@ -112,7 +112,6 @@ export default async function SourceCodePage() {
 									key={i}
 									name={repo.name}
 									description={repo.description}
-									// repo={repo.repo}
 									data={repo.data}
 								/>
 							)

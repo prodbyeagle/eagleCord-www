@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown';
 
 import {
 	Accordion,
@@ -9,6 +8,8 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion';
+
+import { MarkdownRenderer } from '../plugins/markdown-renderer';
 
 interface FaqItemProps {
 	slug: string;
@@ -50,7 +51,7 @@ export function FaqAccordion({ items }: { items: FaqItemProps[] }) {
 					</AccordionTrigger>
 					<AccordionContent className='mt-2 text-muted-foreground'>
 						<div className='mt-2 rounded-md bg-card p-4 text-muted-foreground prose prose-sm sm:prose-base max-w-none'>
-							<ReactMarkdown>{content}</ReactMarkdown>
+							<MarkdownRenderer content={content} />
 						</div>
 					</AccordionContent>
 				</AccordionItem>

@@ -16,26 +16,8 @@ export function MarkdownRenderer({ content }: { content: string }) {
 					'<h1 class="text-3xl font-bold text-foreground mt-12 mb-8 pb-4 border-b-2 border-primary/20">$1</h1>'
 				)
 
-				// Code blocks
-				.replace(/```(\w+)?\n([\s\S]*?)```/g, (lang, code) => {
-					const id = Math.random().toString(36).substr(2, 9);
-					return `
-          <div class="relative group my-6">
-            <div class="flex items-center justify-between bg-muted/50 px-4 py-2 rounded-t-lg border border-b-0">
-              <span class="text-xs font-medium text-muted-foreground uppercase tracking-wide">${lang || 'code'}</span>
-              <button 
-                onclick="copyCode('${code.replace(/'/g, "\\'")}', '${id}')" 
-                class="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-background rounded text-muted-foreground hover:text-foreground"
-                title="Copy code"
-              >
-                <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-              </button>
-            </div>
-            <pre class="bg-muted/80 p-4 rounded-b-lg border overflow-x-auto"><code class="text-sm font-mono text-foreground whitespace-pre">${code}</code></pre>
-          </div>
-        `;
+				.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+					return `<code-block lang="${lang}">${code}</code-block>`;
 				})
 
 				// Inline code
