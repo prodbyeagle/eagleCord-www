@@ -1,15 +1,16 @@
-import { AlertTriangle, CheckCircle, Download, ExternalLink, Folder, MousePointer2 } from 'lucide-react';
+import {
+	AlertTriangle,
+	CheckCircle,
+	Download,
+	ExternalLink,
+	Folder,
+	MousePointer2,
+} from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-
-
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-
-
-
-
 
 export function MacOSTab() {
 	const [downloadState, setDownloadState] = useState<

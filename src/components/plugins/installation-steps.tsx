@@ -1,9 +1,9 @@
 import { Check, Copy, Download, Link } from 'lucide-react';
 import { useState } from 'react';
 
+import { Code } from '../eagle/code';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
-import { Code } from '../eagle/code';
 
 export function InstallationSteps({ pluginName }: { pluginName: string }) {
 	const [copied, setCopied] = useState(false);
@@ -68,9 +68,7 @@ export function InstallationSteps({ pluginName }: { pluginName: string }) {
 									<span className='text-sm text-muted-foreground'>
 										Search for:
 									</span>
-									<Code>
-										{pluginName}
-									</Code>
+									<Code>{pluginName}</Code>
 									<Button
 										variant='ghost'
 										size='sm'

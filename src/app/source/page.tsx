@@ -20,7 +20,7 @@ const repos: RepoEntry[] = [
 	{
 		name: 'eagleCord-www',
 		description: 'Repository for the EagleCord / Vencord Rebuild Website.',
-		repo: 'prodbyeagle/eagleCord-www',
+		repo: 'prodbyeagle/vencord-www',
 	},
 	{
 		name: 'EagleCord',
