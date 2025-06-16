@@ -9,7 +9,7 @@ import {
 	Sparkles,
 	Zap,
 } from 'lucide-react';
-import { motion } from 'motion/react';
+import { motion, type Variants } from 'motion/react';
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
@@ -83,7 +83,7 @@ const steps = [
 	},
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
 	hidden: { opacity: 0 },
 	visible: {
 		opacity: 1,
@@ -94,7 +94,7 @@ const containerVariants = {
 	},
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
 	hidden: { opacity: 0, y: 30 },
 	visible: {
 		opacity: 1,
@@ -152,9 +152,10 @@ export default function CloudPage() {
 							className='space-y-4'>
 							<p className='text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed'>
 								Experience seamless synchronization and enhanced
-								features with Vencord's cloud integration. Your
-								settings, themes, and preferences follow you
-								everywhere while maintaining complete privacy.
+								features with Vencord&apos;s cloud integration.
+								Your settings, themes, and preferences follow
+								you everywhere while maintaining complete
+								privacy.
 							</p>
 						</motion.div>
 
@@ -193,7 +194,7 @@ export default function CloudPage() {
 					</div>
 
 					<div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-						{features.map((feature, index) => {
+						{features.map((feature) => {
 							const IconComponent = feature.icon;
 							return (
 								<motion.div
@@ -329,13 +330,14 @@ export default function CloudPage() {
 												</strong>{' '}
 												inside Discord and check the{' '}
 												<strong className='text-foreground'>
-													"Enable Cloud Integrations"
+													&quot;Enable Cloud
+													Integrations&quot;
 												</strong>{' '}
 												switch.
 											</p>
 											<p>
-												After authorizing, you're ready
-												to go! You can now enable
+												After authorizing, you&apos;re
+												ready to go! You can now enable
 												specific features on the same
 												page and enjoy seamless
 												synchronization across all your
