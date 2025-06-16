@@ -1,5 +1,6 @@
 'use client';
 
+import { containerVariants, itemVariants } from '@/constants/animation';
 import {
 	ArrowRight,
 	Download,
@@ -13,7 +14,7 @@ import {
 	Package,
 	type LucideIcon,
 } from 'lucide-react';
-import { motion, type Variants } from 'motion/react';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -72,29 +73,6 @@ const features: Feature[] = [
 			'Flexible and robust plugin system with many APIs empowering you',
 	},
 ];
-
-const containerVariants: Variants = {
-	hidden: { opacity: 0 },
-	visible: {
-		opacity: 1,
-		transition: {
-			staggerChildren: 0.1,
-			delayChildren: 0.2,
-		},
-	},
-};
-
-const itemVariants: Variants = {
-	hidden: { opacity: 0, y: 20 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: {
-			duration: 0.6,
-			ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
-		},
-	},
-};
 
 export default function LandingPage() {
 	return (

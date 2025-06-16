@@ -61,8 +61,8 @@ export function Navbar() {
 								key={href}
 								href={href}
 								className={cn(
-									'px-3 py-2 text-sm font-medium rounded-md transition-colors',
-									'hover:underline hover:text-accent-foreground',
+									'px-3 py-2 text-sm font-medium transition',
+									'hover:text-accent-foreground',
 									'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 									isActive(href)
 										? 'underline decoration-dotted'

@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import { cache } from 'react';
 
-import { PluginList } from '@/components/plugins/plugin-list';
+import { PluginList } from '@/components/plugins/list';
 
 import { fetchPlugins } from '@/lib/data';
 
