@@ -15,7 +15,8 @@ export function PluginTabs({ readme, pluginName }: PluginTabsProps) {
 		<Tabs
 			defaultValue={readme ? 'overview' : 'installation'}
 			className='w-full'>
-			<TabsList className='grid w-full grid-cols-2'>
+			<TabsList
+				className={`grid w-full ${readme ? 'grid-cols-2' : 'grid-cols-1'}`}>
 				{readme && <TabsTrigger value='overview'>Overview</TabsTrigger>}
 				<TabsTrigger value='installation'>Installation</TabsTrigger>
 			</TabsList>
@@ -23,7 +24,7 @@ export function PluginTabs({ readme, pluginName }: PluginTabsProps) {
 			{readme && (
 				<TabsContent value='overview' className='mt-6'>
 					<Card>
-						<CardContent className='p-6'>
+						<CardContent>
 							<MarkdownRenderer content={readme} />
 						</CardContent>
 					</Card>

@@ -10,42 +10,32 @@ interface PluginInfoCardProps {
 export function PluginInfoCard({ plugin }: PluginInfoCardProps) {
 	return (
 		<Card>
-			<CardContent className='space-y-4'>
+			<CardContent className='space-y-5'>
 				<h3 className='font-semibold text-foreground'>
 					Plugin Information
 				</h3>
 
-				<div className='space-y-3 text-sm'>
-					<div className='flex justify-between'>
-						<span className='text-muted-foreground'>Platform</span>
-						<span className='font-medium'>
-							{plugin.target === 'web'
-								? 'Web & Desktop'
-								: 'Desktop Only'}
-						</span>
-					</div>
+				<dl className='grid grid-cols-2 gap-y-3 text-sm'>
+					<dt className='text-muted-foreground'>Platform</dt>
+					<dd className='font-medium'>
+						{plugin.target === 'web'
+							? 'Web & Desktop'
+							: 'Desktop Only'}
+					</dd>
 
-					<div className='flex justify-between'>
-						<span className='text-muted-foreground'>Commands</span>
-						<span className='font-medium'>
-							{plugin.hasCommands ? 'Yes' : 'No'}
-						</span>
-					</div>
+					<dt className='text-muted-foreground'>Commands</dt>
+					<dd className='font-medium'>
+						{plugin.hasCommands ? 'Yes' : 'No'}
+					</dd>
 
-					<div className='flex justify-between'>
-						<span className='text-muted-foreground'>Authors</span>
-						<span className='font-medium text-right'>
-							{plugin.authors.length}
-						</span>
-					</div>
+					<dt className='text-muted-foreground'>Authors</dt>
+					<dd className='font-medium'>
+						{plugin.authors.length}
+					</dd>
 
-					<div className='flex justify-between'>
-						<span className='text-muted-foreground'>Tags</span>
-						<span className='font-medium'>
-							{plugin.tags.length}
-						</span>
-					</div>
-				</div>
+					<dt className='text-muted-foreground'>Tags</dt>
+					<dd className='font-medium'>{plugin.tags.length}</dd>
+				</dl>
 			</CardContent>
 		</Card>
 	);

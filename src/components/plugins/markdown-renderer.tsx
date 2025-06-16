@@ -1,82 +1,121 @@
-export function MarkdownRenderer({ content }: { content: string }) {
-	const parseMarkdown = (text: string) => {
-		return (
-			text
-				// Headers
-				.replace(
-					/^### (.*$)/gim,
-					'<h3 class="text-xl font-semibold text-foreground mt-8 mb-4 pb-2 border-b">$1</h3>'
-				)
-				.replace(
-					/^## (.*$)/gim,
-					'<h2 class="text-2xl font-bold text-foreground mt-10 mb-6 pb-3 border-b border-border">$1</h2>'
-				)
-				.replace(
-					/^# (.*$)/gim,
-					'<h1 class="text-3xl font-bold text-foreground mt-12 mb-8 pb-4 border-b-2 border-primary/20">$1</h1>'
-				)
+import { Marked, Renderer } from '@ts-stack/markdown';
+import React, { useEffect, useMemo, useState } from 'react';
 
-				.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
-					return `<code-block lang="${lang}">${code}</code-block>`;
-				})
+interface MarkdownRendererProps {
+	content: string | null;
+}
 
-				// Inline code
-				.replace(
-					/`([^`]+)`/g,
-					'<code class="rounded-sm bg-muted px-1 py-0.5 font-mono text-sm text-accent-foreground/70 transition-all duration-300 mr-1">$1</code>'
-				)
+class CustomRenderer extends Renderer {
+	override heading(text: string, level: number) {
+		const tag = `h${level}`;
+		const baseClass = 'scroll-mt-20 font-semibold';
+		const sizeClass =
+			level === 1
+				? 'text-4xl border-b border-muted pb-2 mb-4'
+				: level === 2
+					? 'text-3xl'
+					: level === 3
+						? 'text-xl'
+						: 'text-base';
 
-				// Bold and italic
-				.replace(
-					/\*\*([^*]+)\*\*/g,
-					'<strong class="font-semibold text-foreground">$1</strong>'
-				)
-				.replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>')
+		return `<${tag} class="${baseClass} ${sizeClass}">${text}</${tag}>`;
+	}
 
-				// Links
-				.replace(
-					/\[([^\]]+)\]\(([^)]+)\)/g,
-					'<a href="$2" class="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors" target="_blank" rel="noopener noreferrer">$1</a>'
-				)
+	override link(href: string, title: string | null, text: string) {
+		const titleAttr = title ? `title="${title}"` : '';
+		return `<a href="${href}" ${titleAttr} class="text-primary underline hover:text-primary/80 transition">${text}</a>`;
+	}
 
-				// Lists
-				.replace(
-					/^\* (.+$)/gim,
-					'<li class="ml-4 mb-2 list-disc list-inside text-muted-foreground">$1</li>'
-				)
-				.replace(
-					/^- (.+$)/gim,
-					'<li class="ml-4 mb-2 list-disc list-inside text-muted-foreground">$1</li>'
-				)
+	override code(code: string, language?: string | null) {
+		const langClass = language ? `language-${language}` : '';
+		return `<pre class="rounded-sm bg-muted px-1 py-0.5 font-mono text-sm"><code class="font-mono text-size-3 ${langClass}">${code}</code></pre>`;
+	}
 
-				// ✅ 7. Video before image
-				.replace(
-					/\n(https:\/\/github\.com\/\S+\/assets\/\d+\/[\w-]+)/g,
-					'\n<div class="my-6 rounded-lg overflow-hidden border bg-muted/20"><video controls class="w-full"><source src="$1" type="video/mp4"></video></div>'
-				)
+	override codespan(text: string) {
+		return `<code class="text-accent-foreground/70 transition-all duration-300 mr-1 rounded-sm bg-muted px-1 py-0.5 font-mono text-sm">${text}</code>`;
+	}
 
-				// ✅ 8. Images
-				.replace(
-					/!\[([^\]]*)\]\((https?:\/\/[^\s)]+(?:\)[^\s)]*)?)\)/g,
-					'<div class="my-6 rounded-lg overflow-hidden border bg-muted/20"><img src="$2" alt="$1" class="w-full h-auto" loading="lazy" /></div>'
-				)
+	override list(body: string, ordered: boolean) {
+		const tag = ordered ? 'ol' : 'ul';
+		const listClass = ordered ? 'list-decimal pl-6' : 'list-disc pl-6';
+		return `<${tag} class="${listClass}">${body}</${tag}>`;
+	}
 
-				// 🔁 9. Paragraphs — should come *after* images/videos
-				.replace(
-					/\n\n/g,
-					'</p><p class="text-muted-foreground leading-relaxed mb-4">'
-				)
-				.replace(
-					/^(?!<[h1-6]|<li|<div|<pre)(.+$)/gim,
-					'<p class="text-muted-foreground leading-relaxed mb-4">$1</p>'
-				)
-		);
-	};
+	override blockquote(quote: string) {
+		return `<blockquote class="border-l-4 border-muted pl-4 italic text-muted-foreground my-4">${quote}</blockquote>`;
+	}
+
+	override image(href: string, title: string | null, text: string) {
+		const titleAttr = title ? `title="${title}"` : '';
+		return `<img src="${href}" alt="${text}" ${titleAttr} class="rounded-md max-w-full mx-auto my-4 shadow-md" />`;
+	}
+
+	override table(header: string, body: string) {
+		return `
+      <table class="w-full border-collapse border border-muted my-6 text-size-3">
+        <thead class="bg-muted/50">${header}</thead>
+        <tbody>${body}</tbody>
+      </table>
+    `;
+	}
+
+	override tablerow(content: string) {
+		return `<tr class="border-b border-muted">${content}</tr>`;
+	}
+
+	override tablecell(content: string, flags: { header: boolean }) {
+		const tag = flags.header ? 'th' : 'td';
+		const baseClass = flags.header
+			? 'border border-muted px-4 py-2 text-left font-semibold'
+			: 'border border-muted px-4 py-2';
+		return `<${tag} class="${baseClass}">${content}</${tag}>`;
+	}
+
+	override paragraph(text: string) {
+		return `<p class="mb-4 leading-relaxed">${text}</p>`;
+	}
+
+	override hr() {
+		return `<hr class="my-8 border-muted" />`;
+	}
+}
+
+export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+	const [html, setHtml] = useState('');
+
+	const renderer = useMemo(() => new CustomRenderer(), []);
+
+	useEffect(() => {
+		if (!content) {
+			setHtml('');
+			return;
+		}
+
+		try {
+			Marked.setOptions({
+				renderer,
+				gfm: true,
+				tables: true,
+				breaks: false,
+				pedantic: false,
+				sanitize: false,
+				smartLists: true,
+				smartypants: false,
+			});
+
+			const rendered = Marked.parse(content);
+			setHtml(rendered);
+		} catch (error) {
+			setHtml('<p>Error rendering markdown.</p>');
+			console.error('Markdown rendering error:', error);
+		}
+	}, [content, renderer]);
 
 	return (
-		<div
-			className='prose-custom max-w-none'
-			dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }}
+		<article
+			className='prose prose-invert max-w-full'
+			style={{ color: 'var(--shadcn-prose-foreground)' }}
+			dangerouslySetInnerHTML={{ __html: html }}
 		/>
 	);
 }
